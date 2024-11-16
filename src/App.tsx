@@ -48,6 +48,25 @@ async function retrieveData(city_name: any,country: any){
             }
         });
     })
+    await fetch(`https://api.weatherbit.io/v2.0/forecast/daily?city=${city_name},${country}&key=${import.meta.env.VITE_WEATHER_BIT}&days=7`)
+    .then(response => response.json())
+    .then(data => {
+        data = data.data
+        console.log(data)
+        let forecast_display = document.getElementById("upcoming-days-forecast");
+        forecast_display.innerHTML= "";
+        data.forEach((element: any) => {
+            let dateString = element.datetime;
+            let date = new Date(dateString);
+            let dayName = date.toLocaleDateString('en-US', { weekday: 'long' });
+            let li = document.createElement("li");
+            li.classList.add("forecast-element");
+            li.innerHTML = `<h4>${dayName}</h4><div><img src='https://www.weatherbit.io/static/img/icons/${element.weather.icon}.png'><p>${parseInt(element.temp)}°</p></div>`;
+            forecast_display?.appendChild(li);
+            
+        
+        });
+    })
     LoaderOff()
 }
 function autocomplete(){
@@ -124,62 +143,70 @@ export default function App(){
     window.onload = loaddata;
     return(
         <div className="container">
-            
-            <div className="loader-cont">
-                <span className="loader"></span>
-            </div>
+            <div className="under-container">
 
-            <input type="text" placeholder="Search for cities" className="search" id="search-input" onInput={autocomplete} autoComplete="off"/>
-            <div className="search-items" id="search-items">
-                <ul id="results">
+                <div className="loader-cont">
+                    <span className="loader"></span>
+                </div>
 
-                </ul>
-            </div>
-            <div className="main-sect">
-                <div className="main-text">
-                    <h2 id="city-name"></h2>
-                    <div className="main-temp" id="main-temp">
+                <input type="text" placeholder="Search for cities" className="search" id="search-input" onInput={autocomplete} autoComplete="off"/>
+                <div className="search-items" id="search-items">
+                    <ul id="results">
+
+                    </ul>
+                </div>
+                <div className="main-sect">
+                    <div className="main-text">
+                        <h2 id="city-name"></h2>
+                        <div className="main-temp" id="main-temp">
+                            
+                        </div>
+                    </div>
+                    <div className="main-icon" id="main-icon">
                         
                     </div>
                 </div>
-                <div className="main-icon" id="main-icon">
-                    
+                <div className="day-forecast">
+                        <h3>TODAY'S FORECAST</h3>
+                        <ul className="day-forecast-list" id="day-forecast-list">
+                        </ul>
+                </div>
+                <div className="air-conditions">
+                    <div className="feel air-container">
+                        <div className="air-element">
+                            <i className="bi bi-thermometer-half"></i>
+                            <h3>Reel Feel</h3>
+                        </div>
+                        <span id="reel-feel"></span>
+                    </div>
+                    <div className="wind air-container">
+                        <div className="air-element">
+                            <i className="bi bi-wind"></i>
+                            <h3>Wind</h3>
+                        </div>
+                        <span id="wind"></span>
+                    </div>
+                    <div className="rain air-container">
+                        <div className="air-element">
+                            <i className="bi bi-droplet-fill"></i>
+                            <h3>Precipitations</h3>
+                        </div>
+                        <span id="rain"></span>
+                    </div>
+                    <div className="UV air-container">
+                        <div className="air-element">
+                            <i className="bi bi-brightness-high"></i>
+                            <h3>UV Index</h3>
+                        </div>
+                        <span id="UV"></span>
+                    </div>
                 </div>
             </div>
-            <div className="day-forecast">
-                    <h3>TODAY'S FORECAST</h3>
-                    <ul className="day-forecast-list" id="day-forecast-list">
-                    </ul>
-            </div>
-            <div className="air-conditions">
-                <div className="feel air-container">
-                    <div className="air-element">
-                        <i className="bi bi-thermometer-half"></i>
-                        <h3>Reel Feel</h3>
-                    </div>
-                    <span id="reel-feel"></span>
-                </div>
-                <div className="wind air-container">
-                    <div className="air-element">
-                        <i className="bi bi-wind"></i>
-                        <h3>Wind</h3>
-                    </div>
-                    <span id="wind"></span>
-                </div>
-                <div className="rain air-container">
-                    <div className="air-element">
-                        <i className="bi bi-droplet-fill"></i>
-                        <h3>Precipitations</h3>
-                    </div>
-                    <span id="rain"></span>
-                </div>
-                <div className="UV air-container">
-                    <div className="air-element">
-                        <i className="bi bi-brightness-high"></i>
-                        <h3>UV Index</h3>
-                    </div>
-                    <span id="UV"></span>
-                </div>
+            <div className="seven-days-forecast">
+                <h3>7 days forecast</h3>
+                <ul className="upcoming-days-forecast" id="upcoming-days-forecast">
+
+                </ul>
             </div>
         </div>
     )
