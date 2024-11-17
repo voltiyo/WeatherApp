@@ -337,3 +337,43 @@ body::-webkit-scrollbar-thumb:hover {
     font-size: 2rem;
     margin-left: 25px;
 }
+@media only screen and (max-width:1150px){
+    .container{
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+    .under-container{
+        width: 80%;
+        margin-bottom: 0;
+    }
+    .seven-days-forecast{
+        width: 50%;
+    }
+}
+@media only screen and (max-width:720px){
+    .day-forecast{
+        width: 100%;
+        padding: 30px;
+    }
+    .seven-days-forecast ul li h4{
+        font-weight: 700;
+        font-size: 1.25rem;
+        margin: 0;
+        line-height: 0rem;
+    }
+    .seven-days-forecast{
+        width: 70%;
+    }
+}
+@media only screen and (max-width:520px){
+    .seven-days-forecast ul li h4{
+        font-weight: 700;
+        font-size: 1rem;
+    }
+    .seven-days-forecast{
+        width: 80%;
+        margin-bottom: 100px;
+    }
+}
